@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Image Resizer - MyTools</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f7fb;
+
+            color: #222;
+
+            min-height: 100vh;
+        }
+
+
+        .container {
+
+            width: 90%;
+
+            max-width: 850px;
+
+            margin: 50px auto;
+        }
+
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            text-decoration: none;
+
+            color: #555;
+
+            font-size: 15px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .subtitle {
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+            font-size: 16px;
+        }
+
+
+        .upload-box {
+
+            border: 2px dashed #aaa;
+
+            border-radius: 15px;
+
+            padding: 35px 20px;
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+            background: #fafafa;
+        }
+
+
+        .upload-box input {
+
+            margin-top: 15px;
+        }
+
+
+        .original-size {
+
+            display: none;
+
+            background: #f1f5ff;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-top: 15px;
+
+            color: #333;
+        }
+
+
+        .target-box {
+
+            margin: 25px 0;
+        }
+
+
+        .target-box label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+
+        .target-row {
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .target-row input {
+
+            flex: 1;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+        }
+
+
+        .target-row select {
+
+            width: 100px;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            background: white;
+        }
+
+
+        button {
+
+            width: 100%;
+
+            border: none;
+
+            background: #111;
+
+            color: white;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+
+        button:hover {
+
+            background: #333;
+        }
+
+
+        .hint {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-top: 10px;
+        }
+
+
+        .error {
+
+            background: #ffe5e5;
+
+            color: #c00;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .result {
+
+            margin-top: 30px;
+
+            padding: 25px;
+
+            background: #f0fff4;
+
+            border-radius: 15px;
+
+            border: 1px solid #c8efd4;
+        }
+
+
+        .result h2 {
+
+            margin-bottom: 15px;
+        }
+
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin: 20px 0;
+        }
+
+
+        .stat {
+
+            background: white;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+
+        .stat strong {
+
+            display: block;
+
+            font-size: 20px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .download {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            background: #111;
+
+            color: white;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            margin-top: 10px;
+        }
+
+
+        .download:hover {
+
+            background: #333;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                width: 94%;
+
+                margin: 25px auto;
+            }
+
+
+            .card {
+
+                padding: 25px 18px;
+            }
+
+
+            h1 {
+
+                font-size: 30px;
+            }
+
+
+            .target-row {
+
+                flex-direction: column;
+            }
+
+
+            .target-row select {
+
+                width: 100%;
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <a href="/" class="back">
+        ← Back to MyTools
+    </a>
+
+
+    <div class="card">
+
+
+        <h1>
+            Image Resizer
+        </h1>
+
+
+        <p class="subtitle">
+
+            Reduce any image to your desired file size.
+
+        </p>
+
+
+        {% if error %}
+
+            <div class="error">
+
+                {{ error }}
+
+            </div>
+
+        {% endif %}
+
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+
+            <div class="upload-box">
+
+                <h3>
+                    Select an Image
+                </h3>
+
+                <p>
+                    JPG, JPEG, PNG or WEBP
+                </p>
+
+
+                <input
+                    type="file"
+                    name="image"
+                    id="imageInput"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    required
+                >
+
+
+                <div
+                    class="original-size"
+                    id="originalSize"
+                >
+
+                    Original Size:
+
+                    <strong id="sizeText">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="target-box">
+
+
+                <label>
+                    Target File Size
+                </label>
+
+
+                <div class="target-row">
+
+
+                    <input
+                        type="number"
+                        name="target_size"
+                        min="1"
+                        step="0.1"
+                        placeholder="Example: 500"
+                        value="{{ target_size or '' }}"
+                        required
+                    >
+
+
+                    <select name="target_unit">
+
+                        <option
+                            value="KB"
+                            {% if target_unit == "KB" %}
+                            selected
+                            {% endif %}
+                        >
+                            KB
+                        </option>
+
+
+                        <option
+                            value="MB"
+                            {% if target_unit == "MB" %}
+                            selected
+                            {% endif %}
+                        >
+                            MB
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <p class="hint">
+
+                    Example: Upload a 5 MB image
+                    and enter 500 KB.
+
+                </p>
+
+
+            </div>
+
+
+            <button type="submit">
+
+                Resize Image
+
+            </button>
+
+
+        </form>
+
+
+        {% if resized_file %}
+
+
+            <div class="result">
+
+
+                <h2>
+                    Image Resized 🎉
+                </h2>
+
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <strong>
+
+                            {{ format_size(original_size) }}
+
+                        </strong>
+
+                        Original Size
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <strong>
+
+                            {{ format_size(target_bytes) }}
+
+                        </strong>
+
+                        Target Size
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <strong>
+
+                            {{ format_size(final_size) }}
+
+                        </strong>
+
+                        Final Size
+
+                    </div>
+
+
+                </div>
+
+
+                <p>
+
+                    Saved:
+
+                    <strong>
+                        {{ savings }}%
+                    </strong>
+
+                </p>
+
+
+                <a
+                    href="{{ resized_file }}"
+                    class="download"
+                >
+
+                    Download Resized Image
+
+                </a>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    const imageInput =
+        document.getElementById("imageInput");
+
+    const originalSize =
+        document.getElementById("originalSize");
+
+    const sizeText =
+        document.getElementById("sizeText");
+
+
+    imageInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                this.files[0];
+
+
+            if (!file) {
+
+                originalSize.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            const size =
+                file.size;
+
+
+            let formattedSize;
+
+
+            if (
+                size <
+                1024 * 1024
+            ) {
+
+                formattedSize =
+                    (
+                        size / 1024
+                    ).toFixed(2)
+                    + " KB";
+
+            }
+
+            else {
+
+                formattedSize =
+                    (
+                        size /
+                        (1024 * 1024)
+                    ).toFixed(2)
+                    + " MB";
+
+            }
+
+
+            sizeText.textContent =
+                formattedSize;
+
+
+            originalSize.style.display =
+                "block";
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

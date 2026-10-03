@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PDF Merge — MyTools</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #080b12;
+            color: white;
+        }
+
+        .navbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid #202532;
+            background: #0b0f18;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #7c5cff;
+        }
+
+        .logo-mark {
+            color: #7c5cff !important;
+            margin-right: 5px;
+        }
+
+        .nav-link {
+            color: #aeb5c5;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 70px auto;
+            text-align: center;
+        }
+
+        .tag {
+            color: #8c6cff;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            margin-top: 15px;
+            font-size: 48px;
+        }
+
+        h1 span {
+            color: #8c6cff;
+        }
+
+        .description {
+            margin: 20px auto;
+            max-width: 600px;
+            color: #9ba3b5;
+            line-height: 1.7;
+        }
+
+        .upload-box {
+            margin-top: 40px;
+            padding: 45px 25px;
+            border: 2px dashed #343b4d;
+            border-radius: 20px;
+            background: #101520;
+        }
+
+        .upload-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .upload-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .upload-box p {
+            color: #8f97aa;
+            margin-bottom: 25px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #7c5cff;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .file-label:hover {
+            opacity: 0.9;
+        }
+
+        #fileNames {
+            margin-top: 20px;
+            color: #b8bfd0;
+            line-height: 1.8;
+        }
+
+        .merge-button {
+            margin-top: 25px;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: #111827;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .merge-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .error {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #3b1820;
+            color: #ff9ca9;
+        }
+
+        .success {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: #111a18;
+            border: 1px solid #29443b;
+        }
+
+        .download {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 13px 25px;
+            background: #25c47b;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .features {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .feature {
+            padding: 25px;
+            background: #101520;
+            border: 1px solid #202838;
+            border-radius: 15px;
+        }
+
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .feature h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #8f97aa;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <header class="navbar">
+
+        <a href="/" class="logo">
+
+            <span class="logo-mark">✦</span>
+
+            My<span>Tools</span>
+
+        </a>
+
+        <a href="/" class="nav-link">
+            ← Back to Home
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="tag">
+            ✦ PDF TOOL
+        </div>
+
+        <h1>
+            Merge <span>PDFs.</span>
+        </h1>
+
+        <p class="description">
+
+            Combine multiple PDF files into one single PDF.
+            Select your files, arrange them in the required order,
+            and download the merged document.
+
+        </p>
+
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              class="upload-box">
+
+            <div class="upload-icon">
+                📄
+            </div>
+
+            <h2>
+                Select PDF files
+            </h2>
+
+            <p>
+                Select two or more PDF files to merge.
+            </p>
+
+
+            <input
+                type="file"
+                id="pdfFiles"
+                name="pdfs"
+                accept=".pdf,application/pdf"
+                multiple
+                onchange="showFiles()"
+            >
+
+
+            <label for="pdfFiles"
+                   class="file-label">
+
+                Choose PDF files
+
+            </label>
+
+
+            <div id="fileNames"></div>
+
+
+            <button type="submit"
+                    class="merge-button">
+
+                Merge PDFs
+
+            </button>
+
+        </form>
+
+
+        {% if error %}
+
+        <div class="error">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        {% if merged_file %}
+
+        <div class="success">
+
+            <h2>
+                ✅ PDFs merged successfully!
+            </h2>
+
+            <p style="margin-top: 10px; color: #9ba3b5;">
+                Your merged PDF is ready.
+            </p>
+
+            <a href="{{ merged_file }}"
+               class="download">
+
+                ⬇ Download Merged PDF
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📚
+                </div>
+
+                <h3>
+                    Multiple PDFs
+                </h3>
+
+                <p>
+                    Merge multiple PDF files into one document.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Fast
+                </h3>
+
+                <p>
+                    Quickly combine your documents.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🔒
+                </div>
+
+                <h3>
+                    Simple
+                </h3>
+
+                <p>
+                    Easy interface with straightforward processing.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function showFiles() {
+
+            const input =
+                document.getElementById("pdfFiles");
+
+            const fileNames =
+                document.getElementById("fileNames");
+
+            if (input.files.length === 0) {
+
+                fileNames.innerHTML = "";
+
+                return;
+
+            }
+
+            let html = "<strong>Selected files:</strong><br>";
+
+            for (let i = 0; i < input.files.length; i++) {
+
+                html +=
+                    (i + 1) +
+                    ". " +
+                    input.files[i].name +
+                    "<br>";
+
+            }
+
+            fileNames.innerHTML = html;
+
+        }
+
+    </script>
+
+</body>
+
+</html>

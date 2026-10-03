@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Scientific Calculator — MyTools</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(110, 90, 255, 0.18),
+                    transparent 35%
+                ),
+                #07080d;
+
+            color: white;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 75px;
+
+            padding: 0 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 1px solid #20232d;
+
+            background: rgba(7, 8, 13, 0.85);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #9184ff;
+        }
+
+        .nav-links {
+            display: flex;
+
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: min(1000px, 92%);
+
+            margin: auto;
+
+            padding: 65px 0 100px;
+
+            text-align: center;
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        .tag {
+            color: #9184ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            margin-top: 12px;
+
+            font-size: clamp(42px, 7vw, 70px);
+
+            letter-spacing: -3px;
+
+            line-height: 1;
+        }
+
+        h1 span {
+            background: linear-gradient(
+                90deg,
+                #9a89ff,
+                #4ee5ff
+            );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            max-width: 600px;
+
+            margin: 20px auto 40px;
+
+            color: #777b89;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           CALCULATOR
+        ========================= */
+
+        .calculator {
+            max-width: 650px;
+
+            margin: auto;
+
+            padding: 25px;
+
+            border-radius: 24px;
+
+            background: #10121a;
+
+            border: 1px solid #292c39;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =========================
+           DISPLAY
+        ========================= */
+
+        .display {
+            width: 100%;
+
+            min-height: 90px;
+
+            padding: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            text-align: right;
+
+            border-radius: 15px;
+
+            background: #080a10;
+
+            border: 1px solid #252836;
+
+            color: white;
+
+            font-size: 32px;
+
+            font-weight: 700;
+
+            overflow-x: auto;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .buttons {
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 9px;
+        }
+
+        .buttons button {
+            height: 55px;
+
+            border: 1px solid #292c39;
+
+            border-radius: 10px;
+
+            background: #181b25;
+
+            color: #dfe1e8;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .buttons button:hover {
+            background: #252936;
+
+            border-color: #7770ff;
+
+            transform: translateY(-1px);
+        }
+
+        .function {
+            color: #a99fff !important;
+
+            background: #15172a !important;
+        }
+
+        .operator {
+            color: #66e4ff !important;
+        }
+
+        .danger {
+            color: #ff7d9b !important;
+        }
+
+        .equals {
+            color: #071016 !important;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #5ee4ff,
+                    #8370ff
+                ) !important;
+
+            border: none !important;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-box {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 13px;
+
+            background: #171a24;
+
+            border: 1px solid #292c39;
+        }
+
+        .result-title {
+            color: #737785;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            font-weight: 700;
+        }
+
+        .result {
+            margin-top: 5px;
+
+            color: #9b90ff;
+
+            font-size: 25px;
+
+            font-weight: 800;
+        }
+
+        .error {
+            margin-top: 5px;
+
+            color: #ff6f91;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 650px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .calculator {
+                padding: 15px;
+            }
+
+            .buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .buttons button {
+                height: 50px;
+
+                font-size: 13px;
+            }
+
+            .display {
+                font-size: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <a href="/" class="logo">
+            ✦ My<span>Tools</span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/calculators">
+                Calculators
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <a href="/calculators" class="back">
+            ← Back to Calculators
+        </a>
+
+        <div class="tag">
+            ✦ SCIENTIFIC CALCULATOR
+        </div>
+
+        <h1>
+            Advanced math,
+            <br>
+            <span>made simple.</span>
+        </h1>
+
+        <p class="description">
+            Perform scientific calculations including
+            trigonometry, powers, square roots and logarithms.
+        </p>
+
+
+        <!-- CALCULATOR -->
+
+        <section class="calculator">
+
+            <div class="display" id="display">
+                0
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    class="danger"
+                    onclick="clearDisplay()">
+                    AC
+                </button>
+
+                <button
+                    class="danger"
+                    onclick="deleteLast()">
+                    DEL
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('(')">
+                    (
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue(')')">
+                    )
+                </button>
+
+                <button
+                    class="operator"
+                    onclick="appendValue('/')">
+                    ÷
+                </button>
+
+
+                <button
+                    class="function"
+                    onclick="appendValue('sin(')">
+                    sin
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('cos(')">
+                    cos
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('tan(')">
+                    tan
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('sqrt(')">
+                    √
+                </button>
+
+                <button
+                    class="operator"
+                    onclick="appendValue('*')">
+                    ×
+                </button>
+
+
+                <button
+                    class="function"
+                    onclick="appendValue('log(')">
+                    log
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('ln(')">
+                    ln
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('pi')">
+                    π
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('e')">
+                    e
+                </button>
+
+                <button
+                    class="operator"
+                    onclick="appendValue('-')">
+                    −
+                </button>
+
+
+                <button onclick="appendValue('7')">
+                    7
+                </button>
+
+                <button onclick="appendValue('8')">
+                    8
+                </button>
+
+                <button onclick="appendValue('9')">
+                    9
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('**')">
+                    xʸ
+                </button>
+
+                <button
+                    class="operator"
+                    onclick="appendValue('+')">
+                    +
+                </button>
+
+
+                <button onclick="appendValue('4')">
+                    4
+                </button>
+
+                <button onclick="appendValue('5')">
+                    5
+                </button>
+
+                <button onclick="appendValue('6')">
+                    6
+                </button>
+
+                <button
+                    class="function"
+                    onclick="appendValue('abs(')">
+                    |x|
+                </button>
+
+                <button
+                    class="equals"
+                    onclick="calculate()">
+                    =
+                </button>
+
+
+                <button onclick="appendValue('1')">
+                    1
+                </button>
+
+                <button onclick="appendValue('2')">
+                    2
+                </button>
+
+                <button onclick="appendValue('3')">
+                    3
+                </button>
+
+                <button onclick="appendValue('0')">
+                    0
+                </button>
+
+                <button onclick="appendValue('.')">
+                    .
+                </button>
+
+            </div>
+
+
+            {% if result is not none %}
+
+            <div class="result-box">
+
+                <div class="result-title">
+                    LAST RESULT
+                </div>
+
+                <div class="result">
+                    {{ result }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if error %}
+
+            <div class="result-box">
+
+                <div class="result-title">
+                    ERROR
+                </div>
+
+                <div class="error">
+                    {{ error }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        const display =
+            document.getElementById("display");
+
+
+        function appendValue(value) {
+
+            if (display.innerText === "0") {
+                display.innerText = value;
+            }
+
+            else {
+                display.innerText += value;
+            }
+        }
+
+
+        function clearDisplay() {
+
+            display.innerText = "0";
+        }
+
+
+        function deleteLast() {
+
+            if (
+                display.innerText.length <= 1
+            ) {
+                display.innerText = "0";
+            }
+
+            else {
+                display.innerText =
+                    display.innerText.slice(0, -1);
+            }
+        }
+
+
+        function calculate() {
+
+            const expression =
+                display.innerText;
+
+            if (!expression) {
+                return;
+            }
+
+            const form =
+                document.createElement("form");
+
+            form.method = "POST";
+
+            form.style.display = "none";
+
+
+            const input =
+                document.createElement("input");
+
+            input.name = "expression";
+
+            input.value = expression;
+
+
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+
+            form.submit();
+        }
+
+    </script>
+
+</body>
+
+</html>

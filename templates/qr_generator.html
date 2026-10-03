@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>QR Generator — MyTools</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background: #080a0f;
+
+            color: #f5f7fb;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            border-bottom:
+                1px solid #20232d;
+
+            background:
+                rgba(8, 10, 15, .9);
+        }
+
+
+        .logo {
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+
+        .logo span {
+
+            color: #8f7cff;
+        }
+
+
+        .logo-mark {
+
+            color: #8f7cff;
+
+            margin-right: 6px;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 26px;
+        }
+
+
+        .nav-links a {
+
+            color: #9da3b2;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            text-align: center;
+
+            padding:
+                70px 20px 35px;
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            padding:
+                8px 14px;
+
+            border:
+                1px solid #2b3040;
+
+            border-radius:
+                999px;
+
+            color: #a89cff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: .8px;
+        }
+
+
+        h1 {
+
+            margin-top: 20px;
+
+            font-size:
+                clamp(40px, 7vw, 70px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+        }
+
+
+        .gradient {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #8f7cff,
+                    #43d9ff
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero p {
+
+            max-width: 620px;
+
+            margin:
+                22px auto 0;
+
+            color: #858b9b;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+
+            width:
+                min(900px, 92%);
+
+            margin:
+                25px auto 80px;
+        }
+
+
+        .card {
+
+            border:
+                1px solid #252a36;
+
+            border-radius: 24px;
+
+            background: #10131a;
+
+            padding: 32px;
+
+            box-shadow:
+                0 20px 70px
+                rgba(0, 0, 0, .3);
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #dce0e8;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        textarea {
+
+            width: 100%;
+
+            min-height: 135px;
+
+            resize: vertical;
+
+            padding: 17px;
+
+            border:
+                1px solid #2a2f3c;
+
+            border-radius: 14px;
+
+            outline: none;
+
+            background: #090b10;
+
+            color: white;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+        }
+
+
+        textarea:focus {
+
+            border-color:
+                #7e70ff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(126, 112, 255, .12);
+        }
+
+
+        /* =========================
+           GENERATE BUTTON
+        ========================= */
+
+        .generate {
+
+            width: 100%;
+
+            margin-top: 16px;
+
+            padding: 15px 20px;
+
+            border: 0;
+
+            border-radius: 13px;
+
+            cursor: pointer;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #705cff,
+                    #3d9dff
+                );
+        }
+
+
+        .generate:hover {
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error {
+
+            margin-top: 16px;
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            background: #29171b;
+
+            border:
+                1px solid #63303a;
+
+            color: #ff9fa9;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result {
+
+            margin-top: 30px;
+
+            padding-top: 30px;
+
+            border-top:
+                1px solid #252a36;
+
+            text-align: center;
+        }
+
+
+        .result h2 {
+
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .result p {
+
+            color: #858b9b;
+
+            font-size: 13px;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           QR IMAGE
+        ========================= */
+
+        .qr-box {
+
+            width:
+                min(330px, 100%);
+
+            margin:
+                22px auto;
+
+            padding: 18px;
+
+            border-radius: 18px;
+
+            background: white;
+        }
+
+
+        .qr-box img {
+
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+        }
+
+
+        /* =========================
+           DOWNLOAD
+        ========================= */
+
+        .download {
+
+            display: inline-block;
+
+            padding:
+                13px 20px;
+
+            border-radius: 12px;
+
+            color: white;
+
+            text-decoration: none;
+
+            background: #171b24;
+
+            border:
+                1px solid #303644;
+
+            font-weight: 700;
+        }
+
+
+        .download:hover {
+
+            background: #222735;
+        }
+
+
+        .hint {
+
+            margin-top: 15px;
+
+            color: #626978;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            padding: 30px;
+
+            text-align: center;
+
+            color: #555d6c;
+
+            border-top:
+                1px solid #20232d;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width: 650px) {
+
+            .nav-links {
+
+                display: none;
+            }
+
+
+            .card {
+
+                padding: 20px;
+            }
+
+
+            .hero {
+
+                padding-top: 50px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <header class="navbar">
+
+        <a href="/"
+           class="logo">
+
+            <span class="logo-mark">
+                ✦
+            </span>
+
+            My<span>Tools</span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+
+            <a href="/calculators">
+                Calculators
+            </a>
+
+
+            <a href="/background-remover">
+                Background Remover
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+
+        <div class="badge">
+
+            ✦ QR GENERATOR
+
+        </div>
+
+
+        <h1>
+
+            Create QR codes
+
+            <span class="gradient">
+                instantly.
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Enter a website link, text, phone number
+            or any other information and generate
+            a downloadable QR code.
+
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         TOOL
+    ========================= -->
+
+    <main class="container">
+
+        <div class="card">
+
+
+            <form method="POST">
+
+
+                <label for="text">
+
+                    Enter text or URL
+
+                </label>
+
+
+                <textarea
+                    id="text"
+                    name="text"
+                    placeholder="Example: https://example.com"
+                    required
+                >{{ qr_data.text if qr_data else '' }}</textarea>
+
+
+                <button
+                    class="generate"
+                    type="submit"
+                >
+
+                    Generate QR Code
+
+                </button>
+
+            </form>
+
+
+            {% if error %}
+
+                <div class="error">
+
+                    {{ error }}
+
+                </div>
+
+            {% endif %}
+
+
+            {% if qr_data %}
+
+                <div class="result">
+
+
+                    <h2>
+
+                        Your QR Code is ready
+
+                    </h2>
+
+
+                    <p>
+
+                        {{ qr_data.text }}
+
+                    </p>
+
+
+                    <div class="qr-box">
+
+                        <img
+                            src="{{ qr_data.image }}"
+                            alt="Generated QR Code"
+                        >
+
+                    </div>
+
+
+                    <a
+                        class="download"
+                        href="{{ qr_data.image }}"
+                        download="mytools-qr-code.png"
+                    >
+
+                        ↓ Download QR Code
+
+                    </a>
+
+
+                    <div class="hint">
+
+                        Scan the QR code with any
+                        phone camera or QR scanner.
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        © 2026 MyTools · Built with Python & Flask
+
+    </footer>
+
+
+</body>
+
+</html>

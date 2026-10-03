@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MyTools — Your Digital Toolkit</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <a href="/" class="logo">
+            <span class="logo-mark">✦</span>
+            <span>My<span>Tools</span></span>
+        </a>
+
+        <nav class="nav-menu">
+
+            <a href="#tools">
+                Tools
+            </a>
+
+            <a href="/calculators">
+                Calculators
+            </a>
+
+            <a href="#categories">
+                Categories
+            </a>
+
+            <a href="#creator">
+                About
+            </a>
+
+        </nav>
+
+        <div class="nav-right">
+
+            <button class="nav-search"
+                    type="button"
+                    onclick="focusSearch()">
+
+                <span>⌕</span>
+
+                Search
+
+                <kbd>Ctrl K</kbd>
+
+            </button>
+
+            <button class="menu-button"
+                    type="button">
+
+                ☰
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-grid"></div>
+
+        <div class="hero-orb orb-one"></div>
+        <div class="hero-orb orb-two"></div>
+
+        <div class="hero-inner">
+
+            <div class="hero-pill">
+
+                <span class="pulse-dot"></span>
+
+                100% Free Online Tools
+
+            </div>
+
+
+            <h1>
+
+                Your digital
+
+                <br>
+
+                <span>toolkit.</span>
+
+            </h1>
+
+
+            <p class="hero-text">
+
+                Powerful, simple and beautifully designed tools
+                for your everyday digital needs.
+
+            </p>
+
+
+            <!-- ================= SEARCH ================= -->
+
+            <div class="main-search">
+
+                <div class="search-symbol">
+                    ⌕
+                </div>
+
+                <input
+                    id="toolSearch"
+                    type="text"
+                    placeholder="What do you want to do?"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    onclick="searchTools()">
+
+                    Search
+
+                </button>
+
+            </div>
+
+
+            <!-- ================= QUICK SEARCH ================= -->
+
+            <div class="quick-search">
+
+                <span>
+                    Popular:
+                </span>
+
+
+                <a href="/calculators">
+                    Calculator
+                </a>
+
+
+                <a href="/background-remover">
+                    BG Remover
+                </a>
+
+
+                <a href="/pdf-merge">
+                    PDF Tools
+                </a>
+
+
+                <a href="/qr-generator">
+                    QR Generator
+                </a>
+
+            </div>
+
+
+            <!-- ================= HERO STATS ================= -->
+
+            <div class="hero-stats">
+
+                <div>
+
+                    <strong>
+                        20+
+                    </strong>
+
+                    <span>
+                        Tools
+                    </span>
+
+                </div>
+
+
+                <div class="stat-line"></div>
+
+
+                <div>
+
+                    <strong>
+                        100%
+                    </strong>
+
+                    <span>
+                        Free
+                    </span>
+
+                </div>
+
+
+                <div class="stat-line"></div>
+
+
+                <div>
+
+                    <strong>
+                        Fast
+                    </strong>
+
+                    <span>
+                        Processing
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= POPULAR TOOLS ================= -->
+
+    <section class="tools-section"
+             id="tools">
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-tag">
+                    ✦ POPULAR TOOLS
+                </span>
+
+                <h2>
+
+                    Tools people
+
+                    <span>
+                        love to use.
+                    </span>
+
+                </h2>
+
+            </div>
+
+
+            <a href="#categories"
+               class="view-all">
+
+                View all tools →
+
+            </a>
+
+        </div>
+
+
+        <div class="featured-grid">
+
+
+            <!-- ================= BG REMOVER ================= -->
+
+            <article class="featured-card bg-remover"
+                     id="bg-remover">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+                        🖼️
+                    </div>
+
+                    <span class="card-number">
+                        01
+                    </span>
+
+                </div>
+
+
+                <span class="card-label">
+                    IMAGE TOOL
+                </span>
+
+
+                <h3>
+
+                    Background
+
+                    <br>
+
+                    Remover
+
+                </h3>
+
+
+                <p>
+
+                    Remove image backgrounds
+                    quickly and cleanly.
+
+                </p>
+
+
+                <a href="/background-remover"
+                   class="card-action">
+
+                    Remove background
+
+                    <span>
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <div class="card-glow"></div>
+
+            </article>
+
+
+            <!-- ================= CALCULATOR ================= -->
+
+            <article class="featured-card calculator"
+                     id="calculators">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+                        🧮
+                    </div>
+
+                    <span class="card-number">
+                        02
+                    </span>
+
+                </div>
+
+
+                <span class="card-label">
+                    CALCULATOR HUB
+                </span>
+
+
+                <h3>
+
+                    All your
+
+                    <br>
+
+                    calculations.
+
+                </h3>
+
+
+                <p>
+
+                    Basic, scientific, EMI, GST,
+                    age and more.
+
+                </p>
+
+
+                <a href="/calculators"
+                   class="card-action">
+
+                    Explore calculators
+
+                    <span>
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <div class="card-glow"></div>
+
+            </article>
+
+
+            <!-- ================= PDF ================= -->
+
+            <article class="featured-card pdf"
+                     id="pdf-tools">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+                        📄
+                    </div>
+
+                    <span class="card-number">
+                        03
+                    </span>
+
+                </div>
+
+
+                <span class="card-label">
+                    PDF TOOLS
+                </span>
+
+
+                <h3>
+
+                    Work with
+
+                    <br>
+
+                    your PDFs.
+
+                </h3>
+
+
+                <p>
+
+                    Merge, split, compress and
+                    convert PDF files.
+
+                </p>
+
+
+                <a href="/pdf-merge"
+                   class="card-action">
+
+                    Explore PDF tools
+
+                    <span>
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <div class="card-glow"></div>
+
+            </article>
+
+
+            <!-- ================= QR ================= -->
+
+            <article class="featured-card qr"
+                     id="qr-tools">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+                        ▦
+                    </div>
+
+                    <span class="card-number">
+                        04
+                    </span>
+
+                </div>
+
+
+                <span class="card-label">
+                    QR TOOL
+                </span>
+
+
+                <h3>
+
+                    Create QR
+
+                    <br>
+
+                    codes instantly.
+
+                </h3>
+
+
+                <p>
+
+                    Generate QR codes for links,
+                    text and more.
+
+                </p>
+
+
+                <a href="/qr-generator"
+                   class="card-action">
+
+                    Create QR code
+
+                    <span>
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <div class="card-glow"></div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CALCULATOR HUB ================= -->
+
+    <section class="calculator-section">
+
+        <div class="calculator-heading">
+
+            <span class="section-tag">
+                ✦ CALCULATOR HUB
+            </span>
+
+
+            <h2>
+
+                One place for
+
+                <span>
+                    every calculation.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                From simple math to everyday financial calculations,
+                find the calculator you need.
+
+            </p>
+
+        </div>
+
+
+        <div class="calculator-preview"
+             onclick="window.location.href='/calculators'"
+             style="cursor: pointer;">
+
+
+            <div class="calculator-preview-main">
+
+                <div class="preview-icon">
+                    🧮
+                </div>
+
+
+                <div>
+
+                    <span>
+                        CALCULATORS
+                    </span>
+
+
+                    <h3>
+                        10+ useful calculators
+                    </h3>
+
+
+                    <p>
+
+                        Basic • Scientific • Age • EMI • GST
+                        • Percentage • BMI • Discount
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="calculator-mini-grid">
+
+                <div>
+
+                    <span>
+                        ＋
+                    </span>
+
+                    <p>
+                        Basic
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        %
+                    </span>
+
+                    <p>
+                        Percentage
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        ₹
+                    </span>
+
+                    <p>
+                        GST
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        ⌛
+                    </span>
+
+                    <p>
+                        Age
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <section class="categories-section"
+             id="categories">
+
+        <div class="section-header center">
+
+            <span class="section-tag">
+                ✦ EXPLORE
+            </span>
+
+
+            <h2>
+
+                Find the right
+
+                <span>
+                    tool.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                Everything organized into simple categories.
+
+            </p>
+
+        </div>
+
+
+        <div class="category-grid">
+
+
+            <!-- CALCULATORS -->
+
+            <a href="/calculators"
+               class="category-card">
+
+                <div class="category-icon">
+                    🧮
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Calculators
+                    </h3>
+
+                    <p>
+                        10+ calculators
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- IMAGE TOOLS -->
+
+            <a href="/background-remover"
+               class="category-card">
+
+                <div class="category-icon">
+                    🖼️
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Image Tools
+                    </h3>
+
+                    <p>
+                        Resize • Compress • BG Remove
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- PDF -->
+
+            <a href="/pdf-merge"
+               class="category-card">
+
+                <div class="category-icon">
+                    📄
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        PDF Tools
+                    </h3>
+
+                    <p>
+                        Merge • Split • Compress
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- QR -->
+
+            <a href="/qr-generator"
+               class="category-card">
+
+                <div class="category-icon">
+                    ▦
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        QR Tools
+                    </h3>
+
+                    <p>
+                        Create QR codes
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- CONVERTERS -->
+
+            <a href="#categories"
+               class="category-card"
+               onclick="showComingSoon(event, 'Converters')">
+
+                <div class="category-icon">
+                    🔄
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Converters
+                    </h3>
+
+                    <p>
+                        Convert units & files
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- GENERATORS -->
+
+            <a href="#categories"
+               class="category-card"
+               onclick="showComingSoon(event, 'Generators')">
+
+                <div class="category-icon">
+                    🔐
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Generators
+                    </h3>
+
+                    <p>
+                        Password & useful generators
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= WHY MYTOOLS ================= -->
+
+    <section class="why-section">
+
+        <div class="section-header center">
+
+            <span class="section-tag">
+                ✦ WHY MYTOOLS
+            </span>
+
+
+            <h2>
+
+                Simple tools.
+
+                <span>
+                    Zero hassle.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                Everything you need without complicated software.
+
+            </p>
+
+        </div>
+
+
+        <div class="why-grid">
+
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    ⚡
+                </div>
+
+
+                <h3>
+                    Fast
+                </h3>
+
+
+                <p>
+
+                    Get your work done quickly with
+                    lightweight and responsive tools.
+
+                </p>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    🔒
+                </div>
+
+
+                <h3>
+                    Simple
+                </h3>
+
+
+                <p>
+
+                    Clean interfaces designed so
+                    anyone can use them easily.
+
+                </p>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    ✦
+                </div>
+
+
+                <h3>
+                    Free
+                </h3>
+
+
+                <p>
+
+                    Useful everyday tools available
+                    without complicated subscriptions.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CREATOR ================= -->
+
+    <section class="creator-section"
+             id="creator">
+
+        <div class="creator-card">
+
+
+            <div class="creator-photo">
+
+                <img
+                    src="{{ url_for('static', filename='images/profile.jpg') }}"
+                    alt="Altamash Syed"
+                >
+
+            </div>
+
+
+            <div class="creator-info">
+
+                <span class="section-tag">
+                    ✦ BUILT BY
+                </span>
+
+
+                <h2>
+
+                    Altamash
+
+                    <span>
+                        Syed.
+                    </span>
+
+                </h2>
+
+
+                <p>
+
+                    MyTools is a personal project created to bring
+                    useful digital tools together in one beautiful,
+                    easy-to-use platform.
+
+                </p>
+
+
+                <div class="creator-badge">
+
+                    <span>
+                        ✦
+                    </span>
+
+                    Built with curiosity & code.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-top">
+
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <span class="logo-mark">
+                        ✦
+                    </span>
+
+                    My<span>Tools</span>
+
+                </div>
+
+
+                <p>
+                    Your everyday digital toolkit.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="#tools">
+                    Tools
+                </a>
+
+
+                <a href="/calculators">
+                    Calculators
+                </a>
+
+
+                <a href="#categories">
+                    Categories
+                </a>
+
+
+                <a href="#creator">
+                    About
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 MyTools
+            </span>
+
+
+            <span>
+                Created by Mohd Altamash
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= SEARCH SCRIPT ================= -->
+
+    <script>
+
+        const searchInput =
+            document.getElementById("toolSearch");
+
+
+        /* =========================
+           FOCUS SEARCH
+        ========================= */
+
+        function focusSearch() {
+
+            searchInput.focus();
+
+        }
+
+
+        /* =========================
+           SEARCH TOOLS
+        ========================= */
+
+        function searchTools() {
+
+            const query =
+                searchInput.value
+                .toLowerCase()
+                .trim();
+
+
+            if (!query) {
+
+                searchInput.focus();
+
+                return;
+
+            }
+
+
+            /* BACKGROUND / IMAGE */
+
+            if (
+                query.includes("background") ||
+                query.includes("bg remover") ||
+                query.includes("remove background") ||
+                query.includes("image")
+            ) {
+
+                window.location.href =
+                    "/background-remover";
+
+                return;
+
+            }
+
+
+            /* CALCULATOR */
+
+            if (
+                query.includes("calculator") ||
+                query.includes("calculate") ||
+                query.includes("math") ||
+                query.includes("calculation")
+            ) {
+
+                window.location.href =
+                    "/calculators";
+
+                return;
+
+            }
+
+
+            /* PDF */
+
+            if (
+                query.includes("pdf") ||
+                query.includes("merge pdf") ||
+                query.includes("pdf merge")
+            ) {
+
+                window.location.href =
+                    "/pdf-merge";
+
+                return;
+
+            }
+
+
+            /* QR */
+
+            if (
+                query.includes("qr") ||
+                query.includes("qrcode") ||
+                query.includes("qr code")
+            ) {
+
+                window.location.href =
+                    "/qr-generator";
+
+                return;
+
+            }
+
+
+            /* OTHER */
+
+            alert(
+                "Tool not found yet.\n\nTry Calculator, BG Remover, PDF or QR."
+            );
+
+        }
+
+
+        /* =========================
+           COMING SOON
+        ========================= */
+
+        function showComingSoon(event, toolName) {
+
+            if (event) {
+
+                event.preventDefault();
+
+            }
+
+
+            alert(
+                toolName +
+                " is coming soon to MyTools! 🚀"
+            );
+
+        }
+
+
+        /* =========================
+           ENTER KEY SEARCH
+        ========================= */
+
+        searchInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    searchTools();
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           CTRL + K SEARCH
+        ========================= */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    (event.ctrlKey || event.metaKey) &&
+                    event.key.toLowerCase() === "k"
+                ) {
+
+                    event.preventDefault();
+
+                    searchInput.focus();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Age Calculator — MyTools</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(110, 90, 255, 0.18),
+                    transparent 35%
+                ),
+                #07080d;
+
+            color: white;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 75px;
+
+            padding: 0 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 1px solid #20232d;
+
+            background: rgba(7, 8, 13, 0.85);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #9184ff;
+        }
+
+        .nav-links {
+            display: flex;
+
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: min(950px, 92%);
+
+            margin: auto;
+
+            padding: 65px 0 100px;
+
+            text-align: center;
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        .tag {
+            color: #9184ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            margin-top: 12px;
+
+            font-size: clamp(42px, 7vw, 70px);
+
+            letter-spacing: -3px;
+
+            line-height: 1;
+        }
+
+        h1 span {
+            background: linear-gradient(
+                90deg,
+                #9a89ff,
+                #4ee5ff
+            );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            max-width: 600px;
+
+            margin: 20px auto 40px;
+
+            color: #777b89;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           CALCULATOR CARD
+        ========================= */
+
+        .calculator {
+            max-width: 620px;
+
+            margin: auto;
+
+            padding: 30px;
+
+            border-radius: 24px;
+
+            background: #10121a;
+
+            border: 1px solid #292c39;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =========================
+           DATE INPUT
+        ========================= */
+
+        .input-group {
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #858998;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+
+            height: 58px;
+
+            padding: 0 16px;
+
+            border-radius: 12px;
+
+            border: 1px solid #292c39;
+
+            outline: none;
+
+            background: #181b25;
+
+            color: white;
+
+            font-size: 16px;
+        }
+
+        .input-group input:focus {
+            border-color: #7770ff;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .calculate-button {
+            width: 100%;
+
+            height: 55px;
+
+            margin-top: 22px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #5ee4ff,
+                    #8370ff
+                );
+
+            color: #07080d;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .calculate-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px rgba(100, 110, 255, 0.25);
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-area {
+            margin-top: 28px;
+        }
+
+        .result-title {
+            color: #737785;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 15px;
+        }
+
+        .age-result {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+        .age-box {
+            padding: 24px 10px;
+
+            border-radius: 15px;
+
+            background: #181b25;
+
+            border: 1px solid #292c39;
+        }
+
+        .age-number {
+            font-size: 35px;
+
+            font-weight: 800;
+
+            color: #9b90ff;
+        }
+
+        .age-label {
+            margin-top: 5px;
+
+            color: #737785;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================
+           EXTRA INFO
+        ========================= */
+
+        .extra-info {
+            margin-top: 14px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .info-box {
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: #151820;
+
+            border: 1px solid #252936;
+
+            text-align: left;
+        }
+
+        .info-label {
+            color: #737785;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            margin-top: 7px;
+
+            color: #e5e6eb;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-box {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 12px;
+
+            background: rgba(255, 80, 120, 0.08);
+
+            border: 1px solid rgba(255, 80, 120, 0.25);
+
+            color: #ff7798;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .calculator {
+                padding: 20px;
+            }
+
+            .age-result {
+                grid-template-columns: 1fr;
+            }
+
+            .extra-info {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                letter-spacing: -2px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <a href="/" class="logo">
+            ✦ My<span>Tools</span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/calculators">
+                Calculators
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <a href="/calculators" class="back">
+            ← Back to Calculators
+        </a>
+
+        <div class="tag">
+            ✦ AGE CALCULATOR
+        </div>
+
+        <h1>
+            Know your age,
+            <br>
+            <span>down to the day.</span>
+        </h1>
+
+        <p class="description">
+            Enter your date of birth and calculate your
+            exact age in years, months and days.
+        </p>
+
+
+        <!-- CALCULATOR -->
+
+        <section class="calculator">
+
+            <form method="POST">
+
+                <div class="input-group">
+
+                    <label>
+                        DATE OF BIRTH
+                    </label>
+
+                    <input
+                        type="date"
+                        name="dob"
+                        max="{{ today }}"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="calculate-button">
+
+                    Calculate My Age
+
+                </button>
+
+            </form>
+
+
+            {% if result %}
+
+            <div class="result-area">
+
+                <div class="result-title">
+                    YOUR EXACT AGE
+                </div>
+
+
+                <div class="age-result">
+
+                    <div class="age-box">
+
+                        <div class="age-number">
+                            {{ result.years }}
+                        </div>
+
+                        <div class="age-label">
+                            Years
+                        </div>
+
+                    </div>
+
+
+                    <div class="age-box">
+
+                        <div class="age-number">
+                            {{ result.months }}
+                        </div>
+
+                        <div class="age-label">
+                            Months
+                        </div>
+
+                    </div>
+
+
+                    <div class="age-box">
+
+                        <div class="age-number">
+                            {{ result.days }}
+                        </div>
+
+                        <div class="age-label">
+                            Days
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="extra-info">
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Total Days
+                        </div>
+
+                        <div class="info-value">
+                            {{ result.total_days }} days
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Next Birthday
+                        </div>
+
+                        <div class="info-value">
+                            {{ result.next_birthday }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Birthday Countdown
+                        </div>
+
+                        <div class="info-value">
+                            {{ result.days_until_birthday }} days
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Status
+                        </div>
+
+                        <div class="info-value">
+                            🎂 Age calculated successfully
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if error %}
+
+            <div class="error-box">
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

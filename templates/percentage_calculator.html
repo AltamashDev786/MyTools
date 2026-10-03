@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Percentage Calculator — MyTools</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(110, 90, 255, 0.18),
+                    transparent 35%
+                ),
+                #07080d;
+
+            color: white;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            height: 75px;
+
+            padding: 0 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 1px solid #20232d;
+
+            background: rgba(7, 8, 13, 0.85);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+        .logo span {
+
+            color: #9184ff;
+        }
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 28px;
+        }
+
+        .nav-links a {
+
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+
+            width: min(1000px, 92%);
+
+            margin: auto;
+
+            padding: 60px 0 100px;
+
+            text-align: center;
+        }
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .back:hover {
+
+            color: white;
+        }
+
+        .tag {
+
+            color: #9184ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+        h1 {
+
+            margin-top: 12px;
+
+            font-size: clamp(42px, 7vw, 70px);
+
+            letter-spacing: -3px;
+
+            line-height: 1;
+        }
+
+        h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #9a89ff,
+                    #4ee5ff
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+
+            max-width: 650px;
+
+            margin: 20px auto 40px;
+
+            color: #777b89;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           CALCULATOR CARD
+        ========================= */
+
+        .calculator {
+
+            max-width: 760px;
+
+            margin: auto;
+
+            padding: 28px;
+
+            border-radius: 24px;
+
+            background: #10121a;
+
+            border: 1px solid #292c39;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =========================
+           CALCULATION TYPE
+        ========================= */
+
+        .type-title {
+
+            text-align: left;
+
+            color: #737785;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 12px;
+        }
+
+        .types {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 25px;
+        }
+
+        .type-button {
+
+            min-height: 58px;
+
+            padding: 8px;
+
+            border: 1px solid #292c39;
+
+            border-radius: 11px;
+
+            background: #181b25;
+
+            color: #858998;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .type-button:hover {
+
+            border-color: #7770ff;
+
+            color: white;
+        }
+
+        .type-button.active {
+
+            border-color: #7770ff;
+
+            background: #22233a;
+
+            color: #a79cff;
+        }
+
+
+        /* =========================
+           INPUTS
+        ========================= */
+
+        .inputs {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            text-align: left;
+        }
+
+        .input-group label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #858998;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+
+            width: 100%;
+
+            height: 55px;
+
+            padding: 0 15px;
+
+            border: 1px solid #292c39;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background: #181b25;
+
+            color: white;
+
+            font-size: 16px;
+        }
+
+        .input-group input:focus {
+
+            border-color: #7770ff;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .calculate-button {
+
+            width: 100%;
+
+            height: 56px;
+
+            margin-top: 20px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #5ee4ff,
+                    #8370ff
+                );
+
+            color: #07080d;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .calculate-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px rgba(100, 110, 255, 0.25);
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-box {
+
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            background: #181b25;
+
+            border: 1px solid #292c39;
+        }
+
+        .result-label {
+
+            color: #737785;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+        .result-title {
+
+            margin-top: 8px;
+
+            color: #9b90ff;
+
+            font-size: 14px;
+        }
+
+        .result-value {
+
+            margin-top: 5px;
+
+            font-size: 38px;
+
+            font-weight: 800;
+
+            color: white;
+        }
+
+        .result-value span {
+
+            color: #9b90ff;
+
+            font-size: 22px;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-box {
+
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 12px;
+
+            background: rgba(255, 80, 120, 0.08);
+
+            border: 1px solid rgba(255, 80, 120, 0.25);
+
+            color: #ff7798;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .nav-links {
+
+                display: none;
+            }
+
+            .calculator {
+
+                padding: 20px;
+            }
+
+            .types {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .inputs {
+
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+
+                letter-spacing: -2px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <a href="/" class="logo">
+            ✦ My<span>Tools</span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/calculators">
+                Calculators
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <a href="/calculators" class="back">
+            ← Back to Calculators
+        </a>
+
+        <div class="tag">
+            ✦ PERCENTAGE CALCULATOR
+        </div>
+
+        <h1>
+            Percentages,
+            <br>
+            <span>made simple.</span>
+        </h1>
+
+        <p class="description">
+            Calculate percentages, increases, decreases,
+            marks percentages and more.
+        </p>
+
+
+        <!-- CALCULATOR -->
+
+        <section class="calculator">
+
+
+            <div class="type-title">
+                CHOOSE CALCULATION
+            </div>
+
+
+            <div class="types">
+
+                <button
+                    type="button"
+                    class="type-button active"
+                    onclick="selectType('percentage_of', this)">
+                    X% of Y
+                </button>
+
+                <button
+                    type="button"
+                    class="type-button"
+                    onclick="selectType('what_percent', this)">
+                    X is what %
+                </button>
+
+                <button
+                    type="button"
+                    class="type-button"
+                    onclick="selectType('increase', this)">
+                    Increase
+                </button>
+
+                <button
+                    type="button"
+                    class="type-button"
+                    onclick="selectType('decrease', this)">
+                    Decrease
+                </button>
+
+                <button
+                    type="button"
+                    class="type-button"
+                    onclick="selectType('marks', this)">
+                    Marks %
+                </button>
+
+            </div>
+
+
+            <form method="POST">
+
+                <input
+                    type="hidden"
+                    name="calculation_type"
+                    id="calculationType"
+                    value="percentage_of"
+                >
+
+
+                <div class="inputs">
+
+
+                    <div class="input-group">
+
+                        <label id="label1">
+                            PERCENTAGE
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="number1"
+                            id="number1"
+                            placeholder="Enter value"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label id="label2">
+                            NUMBER
+                        </label>
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="number2"
+                            id="number2"
+                            placeholder="Enter value"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="calculate-button">
+
+                    Calculate Percentage
+
+                </button>
+
+            </form>
+
+
+            {% if result %}
+
+            <div class="result-box">
+
+                <div class="result-label">
+                    RESULT
+                </div>
+
+                <div class="result-title">
+                    {{ result.title }}
+                </div>
+
+                <div class="result-value">
+
+                    {{ "%.2f"|format(result.value) }}
+
+                    <span>%</span>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if error %}
+
+            <div class="error-box">
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function selectType(type, button) {
+
+            document.getElementById(
+                "calculationType"
+            ).value = type;
+
+
+            const buttons =
+                document.querySelectorAll(
+                    ".type-button"
+                );
+
+            buttons.forEach(function(btn) {
+
+                btn.classList.remove("active");
+
+            });
+
+
+            button.classList.add("active");
+
+
+            const label1 =
+                document.getElementById("label1");
+
+            const label2 =
+                document.getElementById("label2");
+
+            const input1 =
+                document.getElementById("number1");
+
+            const input2 =
+                document.getElementById("number2");
+
+
+            if (type === "percentage_of") {
+
+                label1.innerText = "PERCENTAGE";
+
+                label2.innerText = "NUMBER";
+
+                input1.placeholder =
+                    "Example: 20";
+
+                input2.placeholder =
+                    "Example: 500";
+
+            }
+
+
+            else if (type === "what_percent") {
+
+                label1.innerText =
+                    "FIRST NUMBER";
+
+                label2.innerText =
+                    "SECOND NUMBER";
+
+                input1.placeholder =
+                    "Example: 25";
+
+                input2.placeholder =
+                    "Example: 100";
+
+            }
+
+
+            else if (type === "increase") {
+
+                label1.innerText =
+                    "ORIGINAL VALUE";
+
+                label2.innerText =
+                    "NEW VALUE";
+
+                input1.placeholder =
+                    "Example: 100";
+
+                input2.placeholder =
+                    "Example: 125";
+
+            }
+
+
+            else if (type === "decrease") {
+
+                label1.innerText =
+                    "ORIGINAL VALUE";
+
+                label2.innerText =
+                    "NEW VALUE";
+
+                input1.placeholder =
+                    "Example: 100";
+
+                input2.placeholder =
+                    "Example: 80";
+
+            }
+
+
+            else if (type === "marks") {
+
+                label1.innerText =
+                    "OBTAINED MARKS";
+
+                label2.innerText =
+                    "TOTAL MARKS";
+
+                input1.placeholder =
+                    "Example: 450";
+
+                input2.placeholder =
+                    "Example: 500";
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

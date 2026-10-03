@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Image to PDF — MyTools</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(99, 102, 241, 0.18),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(168, 85, 247, 0.15),
+                    transparent 35%
+                ),
+                #080b14;
+
+            color: white;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            width: 100%;
+            padding: 22px 7%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+
+            background:
+                rgba(8,11,20,0.75);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #8b5cf6;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #ddd;
+
+            border:
+                1px solid rgba(255,255,255,0.12);
+
+            padding: 10px 18px;
+
+            border-radius: 10px;
+
+            transition: 0.25s;
+        }
+
+        .back-btn:hover {
+            background:
+                rgba(255,255,255,0.08);
+
+            color: white;
+        }
+
+        /* MAIN */
+
+        .container {
+            width: min(1000px, 90%);
+            margin: auto;
+            padding: 70px 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 15px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(139,92,246,0.12);
+
+            border:
+                1px solid rgba(139,92,246,0.3);
+
+            color: #c4b5fd;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size:
+                clamp(40px, 6vw, 70px);
+
+            line-height: 1;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #8b5cf6,
+                    #ec4899
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #9ca3af;
+
+            font-size: 17px;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            line-height: 1.7;
+        }
+
+        /* TOOL BOX */
+
+        .tool-box {
+            background:
+                rgba(255,255,255,0.045);
+
+            border:
+                1px solid rgba(255,255,255,0.1);
+
+            border-radius: 24px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.35);
+        }
+
+        .upload-area {
+            display: block;
+
+            border:
+                2px dashed rgba(139,92,246,0.45);
+
+            border-radius: 20px;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+            background:
+                rgba(139,92,246,0.04);
+        }
+
+        .upload-area:hover {
+            border-color: #8b5cf6;
+
+            background:
+                rgba(139,92,246,0.08);
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .upload-area h2 {
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .choose-btn {
+            display: inline-block;
+
+            padding: 13px 24px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #db2777
+                );
+
+            color: white;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* FILE LIST */
+
+        .files-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .files-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .file-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .file-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 13px 15px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+        }
+
+        .file-icon {
+            font-size: 25px;
+        }
+
+        .file-name {
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            color: #e5e7eb;
+        }
+
+        /* BUTTON */
+
+        .convert-btn {
+            width: 100%;
+
+            border: none;
+
+            margin-top: 30px;
+
+            padding: 17px;
+
+            border-radius: 12px;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #db2777
+                );
+
+            transition: 0.25s;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(124,58,237,0.3);
+        }
+
+        /* ERROR */
+
+        .error {
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(239,68,68,0.1);
+
+            border:
+                1px solid rgba(239,68,68,0.3);
+
+            color: #fca5a5;
+        }
+
+        /* SUCCESS */
+
+        .success {
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            background:
+                rgba(34,197,94,0.08);
+
+            border:
+                1px solid rgba(34,197,94,0.25);
+        }
+
+        .success h3 {
+            color: #86efac;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 12px 22px;
+
+            border-radius: 10px;
+
+            background: #16a34a;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+        }
+
+        .download-btn:hover {
+            background: #15803d;
+        }
+
+        /* FEATURES */
+
+        .features {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 35px;
+        }
+
+        .feature {
+            padding: 25px;
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+        }
+
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .feature h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #9ca3af;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            .container {
+                padding: 45px 0;
+            }
+
+            .tool-box {
+                padding: 20px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                letter-spacing: -2px;
+            }
+
+            nav {
+                padding: 18px 5%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <nav>
+
+        <div class="logo">
+
+            My<span>Tools</span>
+
+        </div>
+
+
+        <a
+            href="/"
+            class="back-btn"
+        >
+
+            ← Back to Home
+
+        </a>
+
+    </nav>
+
+
+
+    <main class="container">
+
+
+        <section class="hero">
+
+
+            <div class="badge">
+
+                📄 PDF Tool
+
+            </div>
+
+
+            <h1>
+
+                Image <span>to PDF.</span>
+
+            </h1>
+
+
+            <p>
+
+                Convert one or multiple images
+                into a single PDF file.
+
+            </p>
+
+        </section>
+
+
+
+        <section class="tool-box">
+
+
+            <form
+                action="/image-to-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+
+                <label
+                    for="images"
+                    class="upload-area"
+                >
+
+
+                    <div class="upload-icon">
+
+                        🖼️
+
+                    </div>
+
+
+                    <h2>
+
+                        Select your images
+
+                    </h2>
+
+
+                    <p>
+
+                        JPG, JPEG, PNG and WebP supported
+
+                    </p>
+
+
+                    <span class="choose-btn">
+
+                        Choose Images
+
+                    </span>
+
+
+                </label>
+
+
+
+                <input
+                    type="file"
+                    id="images"
+                    name="images"
+                    accept="image/*,.jpg,.jpeg,.png,.webp"
+                    multiple
+                    onchange="showFiles()"
+                >
+
+
+
+                <div
+                    class="files-section"
+                    id="filesSection"
+                >
+
+
+                    <h3>
+
+                        Selected Images
+
+                    </h3>
+
+
+                    <div
+                        class="file-list"
+                        id="fileList"
+                    ></div>
+
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="convert-btn"
+                >
+
+                    Convert Images to PDF
+
+                </button>
+
+
+            </form>
+
+
+
+            {% if error %}
+
+                <div class="error">
+
+                    ❌ {{ error }}
+
+                </div>
+
+            {% endif %}
+
+
+
+            {% if pdf_file %}
+
+                <div class="success">
+
+                    <h3>
+
+                        ✅ PDF Created Successfully!
+
+                    </h3>
+
+
+                    <p>
+
+                        Your images have been converted
+                        into one PDF file.
+
+                    </p>
+
+
+                    <a
+                        href="{{ pdf_file }}"
+                        class="download-btn"
+                    >
+
+                        ⬇ Download PDF
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <section class="features">
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+
+                    🖼️
+
+                </div>
+
+
+                <h3>
+
+                    Multiple Images
+
+                </h3>
+
+
+                <p>
+
+                    Select multiple images and
+                    convert them into one PDF.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+
+                    ⚡
+
+                </div>
+
+
+                <h3>
+
+                    Fast Conversion
+
+                </h3>
+
+
+                <p>
+
+                    Quickly convert your images
+                    into a PDF file.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+
+                    🔒
+
+                </div>
+
+
+                <h3>
+
+                    Private
+
+                </h3>
+
+
+                <p>
+
+                    Images are processed by
+                    your Flask application.
+
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <script>
+
+        function showFiles() {
+
+            const input =
+                document.getElementById("images");
+
+            const filesSection =
+                document.getElementById(
+                    "filesSection"
+                );
+
+            const fileList =
+                document.getElementById(
+                    "fileList"
+                );
+
+
+            fileList.innerHTML = "";
+
+
+            if (input.files.length === 0) {
+
+                filesSection.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            filesSection.style.display =
+                "block";
+
+
+            Array.from(input.files).forEach(
+                function(file) {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "file-item";
+
+
+                    item.innerHTML = `
+
+                        <div class="file-icon">
+
+                            🖼️
+
+                        </div>
+
+
+                        <div class="file-name">
+
+                            ${file.name}
+
+                        </div>
+
+                    `;
+
+
+                    fileList.appendChild(item);
+
+                }
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

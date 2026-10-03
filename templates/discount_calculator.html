@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Discount Calculator — MyTools</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(110, 90, 255, 0.18),
+                    transparent 35%
+                ),
+                #07080d;
+
+            color: white;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            height: 75px;
+
+            padding: 0 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 1px solid #20232d;
+
+            background: rgba(7, 8, 13, 0.85);
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        .logo {
+
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+
+        .logo span {
+
+            color: #9184ff;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 28px;
+        }
+
+
+        .nav-links a {
+
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+
+            width: min(900px, 92%);
+
+            margin: auto;
+
+            padding: 60px 0 100px;
+
+            text-align: center;
+        }
+
+
+        .back {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #858998;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+
+        .back:hover {
+
+            color: white;
+        }
+
+
+        .tag {
+
+            color: #9184ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+
+        h1 {
+
+            margin-top: 12px;
+
+            font-size: clamp(42px, 7vw, 70px);
+
+            letter-spacing: -3px;
+
+            line-height: 1;
+        }
+
+
+        h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #9a89ff,
+                    #4ee5ff
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .description {
+
+            max-width: 620px;
+
+            margin: 20px auto 40px;
+
+            color: #777b89;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           CALCULATOR CARD
+        ========================= */
+
+        .calculator {
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding: 30px;
+
+            border-radius: 24px;
+
+            background: #10121a;
+
+            border: 1px solid #292c39;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =========================
+           INPUTS
+        ========================= */
+
+        .inputs {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            text-align: left;
+        }
+
+
+        .input-group label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #858998;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+
+        .input-group input {
+
+            width: 100%;
+
+            height: 58px;
+
+            padding: 0 16px;
+
+            border-radius: 12px;
+
+            border: 1px solid #292c39;
+
+            outline: none;
+
+            background: #181b25;
+
+            color: white;
+
+            font-size: 16px;
+        }
+
+
+        .input-group input:focus {
+
+            border-color: #7770ff;
+        }
+
+
+        .unit {
+
+            margin-top: 7px;
+
+            color: #5e6270;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           DISCOUNT SLIDER
+        ========================= */
+
+        .quick-discounts {
+
+            margin-top: 22px;
+
+            text-align: left;
+        }
+
+
+        .quick-title {
+
+            margin-bottom: 10px;
+
+            color: #737785;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+
+        .discount-buttons {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+
+        .discount-buttons button {
+
+            padding: 9px 14px;
+
+            border: 1px solid #292c39;
+
+            border-radius: 9px;
+
+            background: #181b25;
+
+            color: #858998;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+
+        .discount-buttons button:hover {
+
+            border-color: #7770ff;
+
+            color: white;
+
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .calculate-button {
+
+            width: 100%;
+
+            height: 56px;
+
+            margin-top: 22px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #5ee4ff,
+                    #8370ff
+                );
+
+            color: #07080d;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .calculate-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(100, 110, 255, 0.25);
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result-box {
+
+            margin-top: 28px;
+
+            padding: 28px;
+
+            border-radius: 18px;
+
+            background: #181b25;
+
+            border: 1px solid #292c39;
+        }
+
+
+        .result-label {
+
+            color: #737785;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .final-price {
+
+            font-size: 55px;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #9a89ff,
+                    #4ee5ff
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .final-text {
+
+            margin-top: 5px;
+
+            color: #737785;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           RESULT GRID
+        ========================= */
+
+        .result-grid {
+
+            margin-top: 22px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .result-card {
+
+            padding: 18px;
+
+            text-align: left;
+
+            border-radius: 13px;
+
+            background: #12151d;
+
+            border: 1px solid #252936;
+        }
+
+
+        .result-title {
+
+            color: #737785;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .result-value {
+
+            margin-top: 7px;
+
+            color: #e5e6eb;
+
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+
+        .saved {
+
+            color: #62dfb0;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-box {
+
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 12px;
+
+            background: rgba(255, 80, 120, 0.08);
+
+            border: 1px solid rgba(255, 80, 120, 0.25);
+
+            color: #ff7798;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 650px) {
+
+            .nav-links {
+
+                display: none;
+            }
+
+            .calculator {
+
+                padding: 20px;
+            }
+
+            .inputs {
+
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+
+                letter-spacing: -2px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <a href="/" class="logo">
+            ✦ My<span>Tools</span>
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/calculators">
+                Calculators
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <a href="/calculators" class="back">
+            ← Back to Calculators
+        </a>
+
+
+        <div class="tag">
+            ✦ DISCOUNT CALCULATOR
+        </div>
+
+
+        <h1>
+
+            Find your
+
+            <br>
+
+            <span>final price.</span>
+
+        </h1>
+
+
+        <p class="description">
+
+            Enter the original price and discount percentage
+            to instantly calculate your savings and final price.
+
+        </p>
+
+
+        <!-- CALCULATOR -->
+
+        <section class="calculator">
+
+
+            <form method="POST">
+
+
+                <div class="inputs">
+
+
+                    <!-- ORIGINAL PRICE -->
+
+                    <div class="input-group">
+
+                        <label>
+                            ORIGINAL PRICE
+                        </label>
+
+                        <input
+                            type="number"
+                            name="original_price"
+                            step="0.01"
+                            min="0"
+                            placeholder="Example: 2000"
+                            required
+                        >
+
+                        <div class="unit">
+                            Enter the original price
+                        </div>
+
+                    </div>
+
+
+                    <!-- DISCOUNT -->
+
+                    <div class="input-group">
+
+                        <label>
+                            DISCOUNT
+                        </label>
+
+                        <input
+                            type="number"
+                            name="discount_percent"
+                            id="discountInput"
+                            step="0.01"
+                            min="0"
+                            max="100"
+                            placeholder="Example: 20"
+                            required
+                        >
+
+                        <div class="unit">
+                            Enter discount percentage
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- QUICK DISCOUNTS -->
+
+                <div class="quick-discounts">
+
+                    <div class="quick-title">
+                        QUICK DISCOUNT
+                    </div>
+
+
+                    <div class="discount-buttons">
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(5)">
+                            5%
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(10)">
+                            10%
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(15)">
+                            15%
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(20)">
+                            20%
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(25)">
+                            25%
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(30)">
+                            30%
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="setDiscount(50)">
+                            50%
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="calculate-button">
+
+                    Calculate Discount
+
+                </button>
+
+
+            </form>
+
+
+            {% if result %}
+
+
+            <!-- RESULT -->
+
+            <div class="result-box">
+
+
+                <div class="result-label">
+                    FINAL PRICE
+                </div>
+
+
+                <div class="final-price">
+
+                    ₹{{ "%.2f"|format(result.final_price) }}
+
+                </div>
+
+
+                <div class="final-text">
+
+                    Price after {{ result.discount_percent }}% discount
+
+                </div>
+
+
+                <div class="result-grid">
+
+
+                    <div class="result-card">
+
+                        <div class="result-title">
+                            Original Price
+                        </div>
+
+                        <div class="result-value">
+                            ₹{{ "%.2f"|format(result.original_price) }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <div class="result-title">
+                            Discount
+                        </div>
+
+                        <div class="result-value">
+                            {{ result.discount_percent }}%
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <div class="result-title">
+                            You Save
+                        </div>
+
+                        <div class="result-value saved">
+                            ₹{{ "%.2f"|format(result.discount_amount) }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <div class="result-title">
+                            Final Price
+                        </div>
+
+                        <div class="result-value">
+                            ₹{{ "%.2f"|format(result.final_price) }}
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+            {% if error %}
+
+            <div class="error-box">
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        function setDiscount(value) {
+
+            document.getElementById(
+                "discountInput"
+            ).value = value;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
