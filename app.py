@@ -1,10 +1,11 @@
 import uuid
 import qrcode
+from rembg import remove, new_session
 from flask import Flask, render_template, request, send_from_directory
 from datetime import date
 from werkzeug.utils import secure_filename
 import base64
-from rembg import remove, new_session
+
 import calendar
 import math
 import os
