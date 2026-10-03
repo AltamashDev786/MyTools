@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, send_from_directory
 from datetime import date
 from werkzeug.utils import secure_filename
 import base64
-from rembg import remove, new_session
 import calendar
 import math
 import os
@@ -1704,80 +1703,15 @@ def image_resizer():
 )
 def background_remover():
 
+    # Background removal with rembg/ONNX is disabled on the Render
+    # Free 512 MB instance because loading the AI model can exhaust
+    # the available RAM and crash the Gunicorn worker.
     if request.method == "GET":
         return render_template("background_remover.html")
 
-    if "image" not in request.files:
-        return {"error": "Please select an image."}, 400
-
-    file = request.files["image"]
-
-    if file.filename == "":
-        return {"error": "Please select an image."}, 400
-
-    if not allowed_file(file.filename):
-        return {
-            "error": "Only PNG, JPG, JPEG and WEBP images are allowed."
-        }, 400
-
-    input_filename = secure_filename(file.filename)
-    input_path = os.path.join(
-        app.config["UPLOAD_FOLDER"],
-        uuid.uuid4().hex + "_" + input_filename
-    )
-
-    output_filename = uuid.uuid4().hex + ".png"
-    output_path = os.path.join(
-        app.config["REMOVED_FOLDER"],
-        output_filename
-    )
-
-    try:
-        file.save(input_path)
-
-        with open(input_path, "rb") as input_file:
-            input_data = input_file.read()
-
-        session = new_session("u2netp")
-
-        output_data = remove(input_data, session=session)
-
-        with open(output_path, "wb") as output_file:
-            output_file.write(output_data)
-
-        with open(output_path, "rb") as output_file:
-            result_b64 = base64.b64encode(
-                output_file.read()
-            ).decode("ascii")
-
-        try:
-            os.remove(input_path)
-        except OSError:
-            pass
-
-        return {
-            "result": "data:image/png;base64," + result_b64,
-            "download": "/download/" + output_filename
-        }
-
-    except Exception as e:
-        print("Background remover error:", e)
-
-        try:
-            if os.path.exists(input_path):
-                os.remove(input_path)
-        except OSError:
-            pass
-
-        try:
-            if os.path.exists(output_path):
-                os.remove(output_path)
-        except OSError:
-            pass
-
-        return {
-            "error": "Background removal failed. Please try another image."
-        }, 500
+    return {
+        "error": "Background Remover is temporarily unavailable on the free server. Other MyTools are available."
+    }, 503
 
 
 # =========================
