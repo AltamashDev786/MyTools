@@ -1,11 +1,10 @@
 import uuid
 import qrcode
-from rembg import remove, new_session
 from flask import Flask, render_template, request, send_from_directory
 from datetime import date
 from werkzeug.utils import secure_filename
 import base64
-
+from rembg import remove, new_session
 import calendar
 import math
 import os
@@ -14,8 +13,6 @@ import uuid
 
 app = Flask(__name__)
 
-# Load the AI model once when the app starts.
-REMBG_SESSION = new_session("u2net")
 
 
 # =========================
@@ -1505,6 +1502,8 @@ def image_compressor():
         savings=savings,
         quality=quality
     )
+
+
 # ==================================================
 # IMAGE RESIZER - TARGET SIZE
 # ==================================================
@@ -1514,75 +1513,42 @@ def image_resizer():
 
     error = None
     resized_file = None
-
     original_size = None
     final_size = None
     target_bytes = None
     savings = None
-
     target_size = ""
     target_unit = "KB"
 
     def format_size(size_bytes):
-
         if size_bytes is None:
             return ""
-
         if size_bytes < 1024:
             return f"{size_bytes} B"
-
         if size_bytes < 1024 * 1024:
             return f"{size_bytes / 1024:.2f} KB"
-
         return f"{size_bytes / (1024 * 1024):.2f} MB"
 
-
     def encode_image(image, quality, scale):
-
         from io import BytesIO
         from PIL import Image
 
         work_image = image.copy()
 
-        # Resize dimensions if required
         if scale < 1:
-
-            new_width = max(
-                1,
-                int(image.width * scale)
-            )
-
-            new_height = max(
-                1,
-                int(image.height * scale)
-            )
-
+            new_width = max(1, int(image.width * scale))
+            new_height = max(1, int(image.height * scale))
             work_image = work_image.resize(
                 (new_width, new_height),
                 Image.Resampling.LANCZOS
             )
 
-
-        # Convert to RGB for JPEG
         if work_image.mode != "RGB":
-
-            if work_image.mode in (
-                "RGBA",
-                "LA",
-                "P"
-            ):
-
+            if work_image.mode in ("RGBA", "LA", "P"):
                 if work_image.mode == "P":
+                    work_image = work_image.convert("RGBA")
 
-                    work_image = work_image.convert(
-                        "RGBA"
-                    )
-
-                if work_image.mode in (
-                    "RGBA",
-                    "LA"
-                ):
-
+                if work_image.mode in ("RGBA", "LA"):
                     background = Image.new(
                         "RGB",
                         work_image.size,
@@ -1590,40 +1556,20 @@ def image_resizer():
                     )
 
                     if work_image.mode == "LA":
-
-                        alpha = work_image.getchannel(
-                            "A"
-                        )
-
-                        work_image = work_image.convert(
-                            "L"
-                        )
-
-                        background.paste(
-                            work_image,
-                            mask=alpha
-                        )
-
+                        alpha = work_image.getchannel("A")
+                        work_image = work_image.convert("L")
+                        background.paste(work_image, mask=alpha)
                     else:
-
                         background.paste(
                             work_image,
-                            mask=work_image.getchannel(
-                                "A"
-                            )
+                            mask=work_image.getchannel("A")
                         )
 
                     work_image = background
-
             else:
-
-                work_image = work_image.convert(
-                    "RGB"
-                )
-
+                work_image = work_image.convert("RGB")
 
         output = BytesIO()
-
         work_image.save(
             output,
             format="JPEG",
@@ -1631,334 +1577,122 @@ def image_resizer():
             optimize=True,
             progressive=True
         )
-
         return output.getvalue()
 
-
     if request.method == "POST":
-
         image_file = request.files.get("image")
-
-        target_size = request.form.get(
-            "target_size",
-            ""
-        ).strip()
-
-        target_unit = request.form.get(
-            "target_unit",
-            "KB"
-        ).upper()
-
-
-        # -----------------------------
-        # Validate image
-        # -----------------------------
+        target_size = request.form.get("target_size", "").strip()
+        target_unit = request.form.get("target_unit", "KB").upper()
 
         if image_file is None or image_file.filename == "":
-
             error = "Please select an image."
 
-
         elif not allowed_file(image_file.filename):
-
-            error = (
-                "Only JPG, JPEG, PNG and WEBP "
-                "images are allowed."
-            )
-
+            error = "Only JPG, JPEG, PNG and WEBP images are allowed."
 
         else:
-
             try:
-
-                target_number = float(
-                    target_size
-                )
-
+                target_number = float(target_size)
 
                 if target_number <= 0:
-
-                    error = (
-                        "Please enter a valid "
-                        "target size."
-                    )
-
+                    error = "Please enter a valid target size."
                 else:
-
-                    # -----------------------------
-                    # Convert target to bytes
-                    # -----------------------------
-
                     if target_unit == "MB":
-
-                        target_bytes = int(
-                            target_number
-                            * 1024
-                            * 1024
-                        )
-
+                        target_bytes = int(target_number * 1024 * 1024)
                     else:
-
-                        target_bytes = int(
-                            target_number
-                            * 1024
-                        )
-
+                        target_bytes = int(target_number * 1024)
 
                     image_data = image_file.read()
 
                     if not image_data:
-
-                        error = (
-                            "The selected image "
-                            "is empty."
-                        )
-
+                        error = "The selected image is empty."
                     else:
+                        original_size = len(image_data)
 
-                        original_size = len(
-                            image_data
-                        )
-
-
-                        # Target cannot be larger
                         if target_bytes >= original_size:
-
-                            error = (
-                                "Target size must be "
-                                "smaller than the "
-                                "original image."
-                            )
-
+                            error = "Target size must be smaller than the original image."
                         else:
-
                             from PIL import Image, ImageOps
                             from io import BytesIO
 
-                            with Image.open(
-                                BytesIO(image_data)
-                            ) as source_image:
-
-                                image = ImageOps.exif_transpose(
-                                    source_image
-                                )
-
+                            with Image.open(BytesIO(image_data)) as source_image:
+                                image = ImageOps.exif_transpose(source_image)
                                 image.load()
 
-
-                                # ---------------------------------
-                                # First try original dimensions
-                                # ---------------------------------
-
                                 best_data = None
-
                                 low_quality = 10
                                 high_quality = 95
 
-
-                                # Binary search quality
                                 for _ in range(8):
-
-                                    quality = (
-                                        low_quality
-                                        + high_quality
-                                    ) // 2
-
-
-                                    data = encode_image(
-                                        image,
-                                        quality,
-                                        1.0
-                                    )
-
+                                    quality = (low_quality + high_quality) // 2
+                                    data = encode_image(image, quality, 1.0)
 
                                     if len(data) <= target_bytes:
-
                                         best_data = data
-
-                                        low_quality = (
-                                            quality + 1
-                                        )
-
+                                        low_quality = quality + 1
                                     else:
-
-                                        high_quality = (
-                                            quality - 1
-                                        )
-
-
-                                # ---------------------------------
-                                # If target is very small,
-                                # reduce dimensions too
-                                # ---------------------------------
+                                        high_quality = quality - 1
 
                                 if best_data is None:
-
                                     scale = 0.95
 
-                                    while (
-                                        scale >= 0.05
-                                    ):
-
-                                        data = encode_image(
-                                            image,
-                                            10,
-                                            scale
-                                        )
-
+                                    while scale >= 0.05:
+                                        data = encode_image(image, 10, scale)
 
                                         if len(data) <= target_bytes:
-
                                             best_data = data
-
-                                            # Improve quality
-                                            # at this scale
                                             low_quality = 10
                                             high_quality = 95
 
-                                            quality_best = 10
-
                                             for _ in range(8):
+                                                quality = (low_quality + high_quality) // 2
+                                                test_data = encode_image(image, quality, scale)
 
-                                                quality = (
-                                                    low_quality
-                                                    + high_quality
-                                                ) // 2
-
-                                                test_data = encode_image(
-                                                    image,
-                                                    quality,
-                                                    scale
-                                                )
-
-
-                                                if (
-                                                    len(test_data)
-                                                    <= target_bytes
-                                                ):
-
+                                                if len(test_data) <= target_bytes:
                                                     best_data = test_data
-
-                                                    quality_best = quality
-
-                                                    low_quality = (
-                                                        quality + 1
-                                                    )
-
+                                                    low_quality = quality + 1
                                                 else:
-
-                                                    high_quality = (
-                                                        quality - 1
-                                                    )
-
+                                                    high_quality = quality - 1
                                             break
-
 
                                         scale -= 0.05
 
-
-                                # ---------------------------------
-                                # Final fallback
-                                # ---------------------------------
-
                                 if best_data is None:
+                                    best_data = encode_image(image, 10, 0.05)
 
-                                    # Make the image very small
-                                    scale = 0.05
-
-                                    best_data = encode_image(
-                                        image,
-                                        10,
-                                        scale
-                                    )
-
-
-                                # ---------------------------------
-                                # Save result
-                                # ---------------------------------
-
-                                output_filename = (
-                                    uuid.uuid4().hex
-                                    + "_resized.jpg"
-                                )
-
-
+                                output_filename = uuid.uuid4().hex + "_resized.jpg"
                                 output_path = os.path.join(
-                                    app.config[
-                                        "REMOVED_FOLDER"
-                                    ],
+                                    app.config["REMOVED_FOLDER"],
                                     output_filename
                                 )
 
+                                with open(output_path, "wb") as output_file:
+                                    output_file.write(best_data)
 
-                                with open(
-                                    output_path,
-                                    "wb"
-                                ) as output_file:
-
-                                    output_file.write(
-                                        best_data
-                                    )
-
-
-                                final_size = os.path.getsize(
-                                    output_path
-                                )
-
-
+                                final_size = os.path.getsize(output_path)
                                 savings = round(
-                                    (
-                                        1
-                                        - (
-                                            final_size
-                                            / original_size
-                                        )
-                                    )
-                                    * 100,
+                                    (1 - (final_size / original_size)) * 100,
                                     2
                                 )
-
-
-                                resized_file = (
-                                    "/download/"
-                                    + output_filename
-                                )
-
+                                resized_file = "/download/" + output_filename
 
             except Exception as e:
-
-                print(
-                    "Image resizer error:",
-                    e
-                )
-
-                error = (
-                    "Image could not be resized. "
-                    "Please try another image."
-                )
-
+                print("Image resizer error:", e)
+                error = "Image could not be resized. Please try another image."
 
     return render_template(
         "image_resizer.html",
-
         error=error,
-
         resized_file=resized_file,
-
         original_size=original_size,
-
         final_size=final_size,
-
         target_bytes=target_bytes,
-
         savings=savings,
-
         target_size=target_size,
-
         target_unit=target_unit,
-
         format_size=format_size
     )
+
 
 # ==================================================
 # BACKGROUND REMOVER
@@ -2004,7 +1738,9 @@ def background_remover():
         with open(input_path, "rb") as input_file:
             input_data = input_file.read()
 
-        output_data = remove(input_data, session=REMBG_SESSION)
+        session = new_session("u2netp")
+
+        output_data = remove(input_data, session=session)
 
         with open(output_path, "wb") as output_file:
             output_file.write(output_data)
